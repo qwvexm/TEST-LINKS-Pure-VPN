@@ -1,10 +1,8 @@
-name: Hourly Link Update
+name: Test Link
 
 on:
   schedule:
-    # Автоматический запуск каждый час
     - cron: '0 * * * *'
-  # Кнопка для ручного запуска в интерфейсе
   workflow_dispatch:
 
 jobs:
@@ -14,22 +12,19 @@ jobs:
       contents: write
 
     steps:
-    # 1. Скачиваем ваш репозиторий
-    - name: Checkout repository
+    - name: Step 1
       uses: actions/checkout@v4
 
-    # 2. Формируем заголовки, скачиваем чужие строки с 4 по 34 и кодируем в base64
-    - name: Download, format and encode
+    - name: Step 2
       run: |
         echo "#profile-update-interval: 1" > links.txt
         echo "#hide-settings: 1" >> links.txt
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> links.txt
         echo "#profile-web-page-url: https://qwvexm.ru" >> links.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> links.txt
-        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +4 | head -n 31 | base64 -w 0 >> links.txt
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +4 | head -n 31 >> links.txt
 
-    # 3. Сохраняем изменения обратно в ваш проект
-    - name: Commit and push changes
+    - name: Step 3
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@://github.com"
