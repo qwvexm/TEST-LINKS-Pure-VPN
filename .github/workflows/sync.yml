@@ -14,9 +14,11 @@ jobs:
       contents: write
 
     steps:
+    # 1. Скачиваем ваш репозиторий
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # 2. Формируем заголовки, скачиваем чужие строки с 4 по 34 и кодируем в base64
     - name: Download, format and encode
       run: |
         echo "#profile-update-interval: 1" > links.txt
@@ -24,13 +26,13 @@ jobs:
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> links.txt
         echo "#profile-web-page-url: https://qwvexm.ru" >> links.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> links.txt
-        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +4 | head -n 31 >> links.txt
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +4 | head -n 31 | base64 -w 0 >> links.txt
 
     # 3. Сохраняем изменения обратно в ваш проект
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
         git add links.txt
         git diff-index --quiet HEAD || git commit -m "Automated links update [skip ci]"
         git push
