@@ -29,7 +29,7 @@ jobs:
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> temp.txt
         
         # Скачиваем строки с 4 по 34 из чужого файла и дописываем их текстом в тот же временный файл
-        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +4 | head -n 31 >> temp.txt
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 31 >> temp.txt
         
         # Кодируем получившийся временный файл целиком в base64 в одну строку в ваш links.txt
         cat temp.txt | base64 -w 0 > links.txt
