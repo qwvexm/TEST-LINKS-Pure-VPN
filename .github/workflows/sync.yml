@@ -22,7 +22,7 @@ jobs:
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> links.txt
         echo "#profile-web-page-url: https://qwvexm.ru" >> links.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> links.txt
-        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +4 | head -n 31 >> links.txt
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 31 >> links.txt
 
     - name: Step 3
       run: |
