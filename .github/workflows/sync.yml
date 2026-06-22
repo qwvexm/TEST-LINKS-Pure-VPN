@@ -21,7 +21,7 @@ jobs:
         echo "#hide-settings: 1" >> temp.txt
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> temp.txt
         echo "#profile-web-page-url: https://pure-vpn.qwvexm.ru/" >> temp.txt
-        echo "#subscription-userinfo: upload=0; download=0; total=0; expire=1788220800" >> temp.txt
+        echo "#subscription-userinfo: upload=0; download=0; total=0; expire=1782853200" >> temp.txt
         echo "#support-url: https://t.me/p_ure_vpn" >> temp.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C1INGB0LXRgNCy0LXRgNCwLCDQt9C00LXRgdGMINGB0L7QsdGA0LDQvdGLINC60LDQuiDRgNCw0LHQvtGH0LjQtSDRgtCw0Log0Lgg0L3QtdGA0LDQsdC+0YfQuNC1LiDQntCx0L3QvtCy0LvRj9C10YLRgdGPINGA0LDQtyDQsiDRh9Cw0YEuCgpwdXJlLXZwbi5xd3ZleG0ucnU=" >> temp.txt
 
