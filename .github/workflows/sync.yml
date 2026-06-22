@@ -23,7 +23,7 @@ jobs:
         echo "#profile-web-page-url: https://pure-vpn.qwvexm.ru/" >> temp.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> temp.txt
         
-        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt" | head -n 21 >> temp.txt
+        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt" | tail -n +7 | head -n 21 >> temp.txt
         curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 31 >> temp.txt
         cat temp.txt | base64 -w 0 > links.txt
         rm temp.txt
