@@ -2,9 +2,7 @@ name: Hourly Link Update
 
 on:
   schedule:
-    # Автоматический запуск каждый час
     - cron: '0 * * * *'
-  # Кнопка для ручного запуска в интерфейсе
   workflow_dispatch:
 
 jobs:
@@ -14,34 +12,26 @@ jobs:
       contents: write
 
     steps:
-    # 1. Скачиваем ваш репозиторий
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # 2. Собираем весь текст вместе и кодируем целиком в base64
     - name: Download, format and encode whole file
       run: |
-        # Записываем заголовки во временный файл
         echo "#profile-update-interval: 1" > temp.txt
         echo "#hide-settings: 1" >> temp.txt
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> temp.txt
-        echo "#profile-web-page-url: https://qwvexm.ru" >> temp.txt
+        echo "#profile-web-page-url: https://pure-vpn.qwvexm.ru/" >> temp.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> temp.txt
         
-        # Скачиваем строки с 4 по 34 из чужого файла и дописываем их текстом в тот же временный файл
+        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt" | head -n 15 >> temp.txt
         curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 31 >> temp.txt
-        
-        # Кодируем получившийся временный файл целиком в base64 в одну строку в ваш links.txt
         cat temp.txt | base64 -w 0 > links.txt
-        
-        # Удаляем временный файл, чтобы он не попал в репозиторий
         rm temp.txt
 
-    # 3. Сохраняем изменения обратно в ваш проект
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@://github.com"
         git add links.txt
-        git diff-index --quiet HEAD || git commit -m "Automated links update [skip ci]"
+        git diff-index --quiet HEAD || git commit -m "Automated links update from two sources [skip ci]"
         git push
