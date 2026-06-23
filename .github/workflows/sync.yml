@@ -28,8 +28,8 @@ jobs:
         echo "#profile-web-page-url: https://qwvexm.ru" >> temp.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> temp.txt
         
-        curl -sL "https://githubusercontent.com" > raw_links.txt
-        curl -sL "https://githubusercontent.com" >> raw_links.txt
+        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt" > raw_links.txt
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" >> raw_links.txt
         
         python3 - << 'EOF'
         import urllib.parse
