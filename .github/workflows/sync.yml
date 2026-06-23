@@ -38,7 +38,6 @@ jobs:
         curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt" > raw_links.txt
         
         # Скачиваем абсолютно все ссылки из второго репозитория
-        # (ЗАМЕНИТЕ URL_ВТОРОГО_САЙТА на вашу реальную ссылку)
         curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" >> raw_links.txt
         
         python3 - << 'EOF'
@@ -63,20 +62,23 @@ jobs:
                     query_params = urllib.parse.parse_qs(parsed.query)
                     
                     # Проверяем критические для РФ настройки (Reality)
-                    security = query_params.get("security", [""]).lower()
-                    transport = query_params.get("type", [""]).lower()
+                    security = query_params.get("security", [""])
+                    security = security[0].lower() if security else ""
+                    
+                    transport = query_params.get("type", [""])
+                    transport = transport[0].lower() if transport else ""
                     
                     # Оставляем только бронебойные протоколы против ТСПУ
                     if security == "reality" and transport in ["grpc", "tcp", "http", "splithttp"]:
-                        # Отделяем саму ссылку от старого названия (удаляем всё после #)
-                        base_url = line.split("#")[0]
+                        # Отделяем саму ссылку от старого названия (берем строго текст до решетки)
+                        clean_vless_part = line.split("#")[0]
                         
                         # Формируем ваше новое название с эмодзи и порядковым номером
                         new_name_text = f"🇪🇺 📶LTE | ТЕСТ #{counter}"
                         new_name_encoded = urllib.parse.quote(new_name_text)
                         
                         # Собираем ключ обратно, сохраняя знак решётки
-                        processed_links.append(f"{base_url}#{new_name_encoded}")
+                        processed_links.append(f"{clean_vless_part}#{new_name_encoded}")
                         counter += 1
                 except Exception:
                     continue
@@ -95,7 +97,7 @@ jobs:
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@://github.com"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git add links.txt
         git diff-index --quiet HEAD || git commit -m "Rename nodes to LTE format [skip ci]"
         git push
