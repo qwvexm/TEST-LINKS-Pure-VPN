@@ -2,9 +2,7 @@ name: Hourly Link Update
 
 on:
   schedule:
-    # Запуск на 23-й минуте каждого часа
     - cron: '23 * * * *'
-  # Кнопка для ручного запуска в интерфейсе
   workflow_dispatch:
 
 jobs:
@@ -14,34 +12,28 @@ jobs:
       contents: write
 
     steps:
-    # 1. Скачиваем ваш репозиторий
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # 2. Настраиваем Python для фильтрации
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    # 3. Скачиваем базы, отбираем рабочие, переименовываем по вашему шаблону и шифруем
-    - name: Download, filter and encode for RU Anti-Block
+    - name: Download, filter live nodes and encode
       run: |
-        # Записываем служебные заголовки во временный файл
         echo "#profile-update-interval: 1" > temp.txt
         echo "#hide-settings: 1" >> temp.txt
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> temp.txt
         echo "#profile-web-page-url: https://qwvexm.ru" >> temp.txt
         echo "#announce: base64:4oS577iPINCt0YLQviDRgtC10YHRgtC+0LLRi9C5INGB0LXRgNCy0LXRgCwg0YHQtdGA0LLQtdGA0LAg0LHRg9C00YPRgiDQvtCx0L3QvtCy0LvRj9GC0YzRgdGPINC60LDQttC00YvQuSDRh9Cw0YEu" >> temp.txt
         
-        # Скачиваем абсолютно все ссылки из первого репозитория
-        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt" > raw_links.txt
-        
-        # Скачиваем абсолютно все ссылки из второго репозитория
-        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" >> raw_links.txt
+        curl -sL "https://githubusercontent.com" > raw_links.txt
+        curl -sL "https://githubusercontent.com" >> raw_links.txt
         
         python3 - << 'EOF'
         import urllib.parse
+        import subprocess
         import os
 
         processed_links = []
@@ -57,47 +49,51 @@ jobs:
                     continue
                 
                 try:
-                    # Разбираем структуру vless-ключа
                     parsed = urllib.parse.urlparse(line)
                     query_params = urllib.parse.parse_qs(parsed.query)
                     
-                    # Проверяем критические для РФ настройки (Reality)
+                    host_with_port = parsed.netloc.split("@")[-1]
+                    host = host_with_port.split(":")[0]
+
+                  
+                    ping_check = subprocess.run(
+                        ["ping", "-c", "1", "-W", "2", host],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL
+                    )
+                    
+                    if ping_check.returncode != 0:
+                        continue
+                        
                     security = query_params.get("security", [""])
                     security = security[0].lower() if security else ""
                     
                     transport = query_params.get("type", [""])
                     transport = transport[0].lower() if transport else ""
                     
-                    # Оставляем только бронебойные протоколы против ТСПУ
                     if security == "reality" and transport in ["grpc", "tcp", "http", "splithttp"]:
-                        # Отделяем саму ссылку от старого названия (берем строго текст до решетки)
                         clean_vless_part = line.split("#")[0]
                         
-                        # Формируем ваше новое название с эмодзи и порядковым номером
                         new_name_text = f"🇪🇺 📶LTE | ТЕСТ #{counter}"
                         new_name_encoded = urllib.parse.quote(new_name_text)
                         
-                        # Собираем ключ обратно, сохраняя знак решётки
                         processed_links.append(f"{clean_vless_part}#{new_name_encoded}")
                         counter += 1
                 except Exception:
                     continue
 
-        # Записываем только отфильтрованные и красиво переименованные ключи
         with open("temp.txt", "a") as f:
             for link in processed_links:
                 f.write(link + "\n")
         EOF
 
-        # Упаковываем весь файл целиком в Base64 одной строкой
         cat temp.txt | base64 -w 0 > links.txt
         rm temp.txt raw_links.txt
 
-    # 4. Сохраняем изменения обратно в ваш проект
     - name: Commit and push changes
       run: |
         git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
         git add links.txt
-        git diff-index --quiet HEAD || git commit -m "Rename nodes to LTE format [skip ci]"
+        git diff-index --quiet HEAD || git commit -m "Filter live nodes and rename to LTE format [skip ci]"
         git push
