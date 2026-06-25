@@ -19,12 +19,7 @@ jobs:
         run: |
           set -e
 
-          HEADER='#profile-update-interval: 1
-#hide-settings: 1
-#profile-title: 🪐 Pure VPN | ТЕСТ
-#subscription-userinfo: expire=1782853200
-#support-url: https://pure-vpn.qwvexm.ru
-#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCnB1cmUtdnBuLnF3dmV4bS5ydQ=='
+          HEADER=$(printf '#profile-update-interval: 1\n#hide-settings: 1\n#profile-title: 🪐 Pure VPN | ТЕСТ\n#subscription-userinfo: expire=1782853200\n#support-url: https://pure-vpn.qwvexm.ru\n#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCnB1cmUtdnBuLnF3dmV4bS5ydQ==')
 
           SITE1_URL="https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
           SITE2_URL="https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt"
