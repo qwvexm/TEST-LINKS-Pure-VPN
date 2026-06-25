@@ -25,7 +25,7 @@ jobs:
           SITE2_URL="https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
 
           SITE1_LINES=$(curl -fsSL "$SITE1_URL" | sed -n '5,34p')
-          SITE2_LINES=$(curl -fsSL "$SITE2_URL" | sed -n '5,34p')
+          SITE2_LINES=$(curl -fsSL "$SITE2_URL" | sed -n '6,35p')
 
           # склеиваем: заголовок + 30 строк с 1 сайта + 30 строк со 2 сайта
           FULL_CONTENT=$(printf '%s\n%s\n%s\n' "$HEADER" "$SITE1_LINES" "$SITE2_LINES")
