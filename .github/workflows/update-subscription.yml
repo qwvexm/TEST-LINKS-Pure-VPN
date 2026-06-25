@@ -31,7 +31,7 @@ jobs:
           FULL_CONTENT=$(printf '%s\n%s\n%s\n' "$HEADER" "$SITE1_LINES" "$SITE2_LINES")
 
           # кодируем всё содержимое в base64 (одной строкой, без разрывов)
-          echo "$FULL_CONTENT" | base64 -w 0 > subscription.txt
+          echo "$FULL_CONTENT" | base64 -w 0 > links.txt
 
       - name: Commit and push if changed
         run: |
