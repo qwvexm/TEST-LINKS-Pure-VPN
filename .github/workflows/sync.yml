@@ -23,18 +23,17 @@ jobs:
         echo "#subscription-userinfo: expire=1782853200" >> temp.txt
         echo "#support-url: https://qwvexm.ru" >> temp.txt
         echo "#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCnB1cmUtdnBuLnF3dmV4bS5ydQ==" >> temp.txt
- 
-        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt" | tail -n +7 | head -n 35 >> raw.txt 
-        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 34 >> raw.txt
+        
+		curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt" | tail -n +7 | head -n 35 >> temp.txt
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 34 >> temp.txt
         
         awk '
         BEGIN {
-            name = "%F0%9F%87%B7%F0%9F%87%BA%20%F0%9F%9B%9C%20WIFI%20%E2%80%A2%20%D0%A2%D0%95%D0%A1%D0%A2%20%23"
             counter = 1
         }
         /vless:\/\// {
             split($0, parts, "#")
-            print parts "#" name counter
+            print parts[1] "#🇷🇺 🛜 WIFI • ТЕСТ #" counter
             counter++
         }
         ' raw.txt >> temp.txt
