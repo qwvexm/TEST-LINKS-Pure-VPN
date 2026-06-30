@@ -1,46 +1,41 @@
-name: Update VPN Subscription
+name: Hourly Link Update
 
 on:
   schedule:
-    - cron: '0 * * * *'    # каждый час
-  workflow_dispatch: {}      # позволяет запустить руками из вкладки Actions
-
-permissions:
-  contents: write
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
-  update-subscription:
+  update-file:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Build and encode subscription
-        run: |
-          set -e
+    - name: Download, format and encode whole file
+      run: |
+        echo "#profile-update-interval: 1" > temp.txt
+        echo "#hide-settings: 1" >> temp.txt
+        echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> temp.txt
+		echo "#subscription-userinfo: expire=1782853200" >> temp.txt
+        echo "#support-url: https://pure-vpn.qwvexm.ru" >> temp.txt
+        echo "#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCnB1cmUtdnBuLnF3dmV4bS5ydQ==" >> temp.txt
+        
+        curl -sL "https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt" | tail -n +5 | head -n 34 >> temp.txt
+        
+        curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt" | tail -n +7 | head -n 35 >> temp.txt
+        
+        cat temp.txt | base64 -w 0 > links.txt
+        
+        rm temp.txt
 
-          HEADER=$(printf '#profile-update-interval: 1\n#hide-settings: 1\n#profile-title: 🪐 Pure VPN | ТЕСТ\n#subscription-userinfo: expire=1782853200\n#support-url: https://pure-vpn.qwvexm.ru\n#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCnB1cmUtdnBuLnF3dmV4bS5ydQ==')
-
-          SITE1_URL="https://raw.githubusercontent.com/zieng2/wl/refs/heads/main/vless_lite.txt"
-          SITE2_URL="https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt"
-
-          SITE1_LINES=$(curl -fsSL "$SITE1_URL" | sed -n '5,34p')
-          SITE2_LINES=$(curl -fsSL "$SITE2_URL" | sed -n '6,35p')
-
-          # склеиваем: заголовок + 30 строк с 1 сайта + 30 строк со 2 сайта
-          FULL_CONTENT=$(printf '%s\n%s\n%s\n' "$HEADER" "$SITE1_LINES" "$SITE2_LINES")
-
-          # кодируем всё содержимое в base64 (одной строкой, без разрывов)
-          echo "$FULL_CONTENT" | base64 -w 0 > links.txt
-
-      - name: Commit and push if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add links.txt
-          if ! git diff --cached --quiet; then
-            git commit -m "Auto-update subscription file"
-            git push
-          else
-            echo "No changes, skipping commit"
-          fi
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@://github.com"
+        git add links.txt
+        git diff-index --quiet HEAD || git commit -m "Automated links update from two sources [skip ci]"
+        git push
