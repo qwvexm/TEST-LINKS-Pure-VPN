@@ -23,7 +23,7 @@ jobs:
         echo "#profile-title: 🪐 Pure VPN | ТЕСТ" >> temp.txt
         echo "#subscription-userinfo: expire=1782853200" >> temp.txt
         echo "#support-url: https://pure-vpn.qwvexm.ru" >> temp.txt
-        echo "#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCnB1cmUtdnBuLnF3dmV4bS5ydQ==" >> temp.txt
+        echo "#announce: base64:4oS577iPINCi0LXRgdGC0L7QstGL0LUg0YHQtdGA0LLQtdGA0LAKCuKsh++4jyDQndCwINGB0LDQudGC0LUg0LXRgdGC0Ywg0YDQtdGI0LXQvdC40LUg0LXRgdC70Lgg0L/QuNC90LMg0LHQvtC70YzRiNC1IDk5OdC80YEg4qyH77iPCnB1cmUtdnBuLnF3dmV4bS5ydQ==" >> temp.txt
         
         # 2. Скачиваем ссылки со всех источников в один черновой файл raw.txt
         curl -sL "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt" | tail -n +7 | head -n 35 > raw.txt
