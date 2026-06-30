@@ -36,7 +36,7 @@ jobs:
         }
         /vless:\/\// {
             split($0, parts, "#")
-            print parts[1] "#🇷🇺 🛜 WIFI • ТЕСТ #" counter
+            print parts[1] "#🇷🇺 📶🛜 LTE | WIFI  • ТЕСТ #" counter
             counter++
         }
         ' raw.txt >> temp.txt
